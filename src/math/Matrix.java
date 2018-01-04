@@ -27,7 +27,7 @@ public class Matrix {
 	
 	public static final Matrix m44i = Matrix.i(4); //4x4 identity
 	
-	public static Matrix s44(Vec4 v) {
+	public static Matrix s44(Vec3 v) {
 		return new Matrix(new float[][] {
 			{v.x,0,0,0},
 			{0,v.y,0,0},
@@ -36,7 +36,7 @@ public class Matrix {
 		});
 	}
 	
-	public static Matrix t44(Vec4 v) {
+	public static Matrix t44(Vec3 v) {
 		return new Matrix(new float[][] {
 			{1,0,0,v.x},
 			{0,1,0,v.y},

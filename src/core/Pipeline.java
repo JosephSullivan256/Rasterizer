@@ -4,7 +4,7 @@ public class Pipeline<A,B> implements Function<A,B> {
 	
 	private Function<A,B> t;
 	
-	public Pipeline(Function<A,B> t){
+	private Pipeline(Function<A,B> t){
 		this.t = t;
 	}
 	
@@ -16,5 +16,8 @@ public class Pipeline<A,B> implements Function<A,B> {
 	public B apply(A a) {
 		return t.apply(a);
 	}
-
+	
+	public static <C,D> Pipeline<C,D> create(Function<C,D> t){
+		return new Pipeline<C,D>(t);
+	}
 }

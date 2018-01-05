@@ -1,14 +1,13 @@
-package core;
+package types;
 
 public class Buffer<T> {
 	
 	private T[][] fragments;
-	private T clearValue;
 	
 	private int width;
 	private int height;
 	
-	public Buffer(T[][] fragments, T clearValue){
+	public Buffer(T[][] fragments){
 		this.fragments = fragments;
 		this.width = fragments.length;
 		this.height = fragments[0].length;
@@ -24,5 +23,9 @@ public class Buffer<T> {
 	
 	public T get(int x, int y){
 		return fragments[x][y];
+	}
+	
+	public void set(T val, int x, int y) {
+		fragments[x][y] = val;
 	}
 }

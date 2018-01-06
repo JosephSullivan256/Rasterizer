@@ -1,4 +1,4 @@
-package core;
+package pipeline;
 
 public class Pipeline<A,B> implements Function<A,B> {
 	
@@ -9,7 +9,7 @@ public class Pipeline<A,B> implements Function<A,B> {
 	}
 	
 	public <T> Pipeline<A,T> push(Function<B,T> t1){
-		return new Pipeline<A,T>((a)->t1.apply(t.apply(a)));
+		return new Pipeline<A,T>(new FunctionPair<A,B,T>(t,t1));
 	}
 	
 	@Override

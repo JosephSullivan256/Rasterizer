@@ -1,7 +1,7 @@
 package testing;
 
-import core.Function;
-import core.Pipeline;
+import pipeline.Function;
+import pipeline.Pipeline;
 
 public class Main {
 	

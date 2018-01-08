@@ -1,16 +1,29 @@
 package testing;
 
+import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
+
+import math.Vec3;
 import pipeline.Function;
 import pipeline.Pipeline;
+import types.Vertex;
 
 public class Main {
 	
 	public static void main(String[] args) {
-		Function<Integer,String> t1 = (Integer a)->"hi";
-		Function<String,Double> t2 = (String a)->3.14;
-		Function<Double,Boolean> t3 = (Double a)->false;
+		List<Vertex<Color>> vertices = new ArrayList<Vertex<Color>>();
+		vertices.add(new Vertex<Color>(new Vec3(0.5f,-0.5f,1f),Color.red));
+		vertices.add(new Vertex<Color>(new Vec3(0f,0.5f,1f),Color.blue));
+		vertices.add(new Vertex<Color>(new Vec3(-0.5f,-0.5f,1f),Color.green));
 		
-		Pipeline<Integer,Boolean> p = Pipeline.create(t1).push(t2).push(t3);
-		System.out.println(p.apply(7));
+		Function<List<Vertex<Color>>,List<Vertex<Color>>> vertexShader =
+				(input) -> {
+					List<Vertex<Color>> output = new ArrayList<Vertex<Color>>();
+					for(Vertex<Color> v: input){
+						output.add(new Vertex<Color>(v.pos,v.attributes));
+					}
+					return output;
+				};
 	}
 }

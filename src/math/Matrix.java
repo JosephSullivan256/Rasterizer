@@ -84,6 +84,15 @@ public class Matrix {
 		return Matrix.rz44((float)Math.cos(theta),(float)Math.sin(theta));
 	}
 	
+	public static Matrix perspective(float r, float l, float t, float b, float n, float f) {
+		return new Matrix(new float[][] {
+			{2*n/(r-l),0,-(r+l)/(r-l),0},
+			{0,2*n/(t-b),},
+			{},
+			{}
+		});
+	}
+	
 	private static float dot(int r, int c, Matrix a, Matrix b) {
 		float sum = 0f;
 		for(int i = 0; i < a.vals[r].length; i++) {

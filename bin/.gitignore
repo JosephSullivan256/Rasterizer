@@ -1,8 +1,2 @@
-/core/
-/math/
+/functions/
 /testing/
-/util/
-/Process.class
-/ChainedProcess.class
-/types/
-/pipeline/

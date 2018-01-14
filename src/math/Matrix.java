@@ -25,7 +25,7 @@ public class Matrix {
 				);
 	}
 	
-	public static final Matrix m44i = Matrix.i(4); //4x4 identity
+	public static final Matrix i44 = Matrix.i(4); //4x4 identity
 	
 	public static Matrix s44(Vec3 v) {
 		return new Matrix(new float[][] {
@@ -87,10 +87,16 @@ public class Matrix {
 	public static Matrix perspective(float r, float l, float t, float b, float n, float f) {
 		return new Matrix(new float[][] {
 			{2*n/(r-l),0,-(r+l)/(r-l),0},
-			{0,2*n/(t-b),},
-			{},
-			{}
+			{0,2*n/(t-b),-(t+b)/(t-b),0},
+			{0,0,2/(f-n),-(f+n)/(f-n)},
+			{0,0,1f,0}
 		});
+	}
+	
+	public static Matrix perspective(float fov, float aspectRatio, float n, float f){
+		float t = 1f/((float)Math.tan(fov/2f));
+		float r = t/aspectRatio;
+		return Matrix.perspective(r,-r,t,-t,n,f);
 	}
 	
 	private static float dot(int r, int c, Matrix a, Matrix b) {

@@ -11,6 +11,7 @@ import math.Vec3;
 import pipeline.Function;
 import pipeline.Pipeline;
 import types.Position;
+import types.Triangle;
 
 public class Main {
 	
@@ -29,9 +30,7 @@ public class Main {
 			private Matrix transform = Matrix.i44;
 			
 			public Position<Color> apply(Position<Color> v) {
-				Matrix tx0 = transform.times(v.pos.asColumnMatrix4());
-				Vec3 tx1 = Vec3.fromColMatrix(tx0).scaledBy(1f/tx0.getVals()[0][3]);
-				return new Position<Color>(tx1,v.attributes);
+				return new Position<Color>(Vec3.fromColMatrix(transform.times(v.pos.asColumnMatrix4())),v.attributes);
 			}
 			
 			@Override
@@ -44,6 +43,30 @@ public class Main {
 		
 		ListFunction<Position<Color>,Position<Color>> vertexShaderIteration = new ListFunction<Position<Color>,Position<Color>>(vertexShader);
 		
+		// Perspective Divide => performs perspective divide
+		Function<Position<Color>,Position<Color>> perspectiveDivide = new Function<Position<Color>,Position<Color>>(){
+
+			@Override
+			public Position<Color> apply(Position<Color> a) {
+				return new Position<Color>(a.pos.scaledBy(a.pos.z),a.attributes);
+			}
+		};
+		
+		ListFunction<Position<Color>,Position<Color>> perspectiveDivideIteration = new ListFunction<Position<Color>,Position<Color>>(perspectiveDivide);
+		
+		// Primitive Assembly => converts from list of vertices into list of triangles
+		Function<List<Position<Color>>,List<Triangle<Color>>> primitiveAssembly = new Function<List<Position<Color>>,List<Triangle<Color>>>(){
+			
+			public List<Triangle<Color>> apply(List<Position<Color>> input){
+				List<Triangle<Color>> output = new ArrayList<Triangle<Color>>();
+				for(int i = 0; i+2 < input.size(); i++) {
+					output.add(new Triangle<Color>(input.get(i),input.get(i+1),input.get(i+2)));
+				}
+				return output;
+			}
+		};
+		
+		// Fragment Shader => converts from list of fragments into the colors
 		Function<Position<Color>,Color> fragmentShader = new Function<Position<Color>,Color>() {
 			@Override
 			public Color apply(Position<Color> a) {
@@ -53,5 +76,10 @@ public class Main {
 		
 		ListFunction<Position<Color>,Color> fragmentShaderIteration = new ListFunction<Position<Color>,Color>(fragmentShader);
 		
+		// Combining all of the previous functions in a pipeline
+		Pipeline<List<Position<Color>>,List<Triangle<Color>>> pipeline = Pipeline
+				.create(vertexShaderIteration)
+				.push(perspectiveDivideIteration)
+				.push(primitiveAssembly);
 	}
 }

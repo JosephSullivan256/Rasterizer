@@ -36,4 +36,20 @@ public class Vec2 {
 	public float magnitude() {
 		return (float) Math.sqrt(magnitudeSquared());
 	}
+	
+	public Matrix asRowMatrix() {
+		return new Matrix(new float[][] {{x,y}});
+	}
+	
+	public Matrix asRowMatrix4() {
+		return new Matrix(new float[][] {{x,y,1,1}});
+	}
+	
+	public Matrix asColumnMatrix() {
+		return asRowMatrix().transpose();
+	}
+	
+	public Matrix asColumnMatrix4() {
+		return asRowMatrix4().transpose();
+	}
 }

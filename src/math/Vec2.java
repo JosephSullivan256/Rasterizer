@@ -2,7 +2,7 @@ package math;
 
 public class Vec2 {
 	
-	private final float x, y;
+	public final float x, y;
 	
 	public Vec2(float x, float y){
 		this.x = x;
@@ -29,19 +29,11 @@ public class Vec2 {
 		return x*v.y-y*v.x;
 	}
 	
-	public Matrix asRowMatrix() {
-		return new Matrix(new float[][] {{x,y,1,1}});
+	public float magnitudeSquared() {
+		return dot(this);
 	}
 	
-	public Matrix asRowMatrix4() {
-		return new Matrix(new float[][] {{x,y,1,1}});
-	}
-	
-	public Matrix asColumnMatrix() {
-		return asRowMatrix().transpose();
-	}
-	
-	public Matrix asColumnMatrix4() {
-		return asRowMatrix4().transpose();
+	public float magnitude() {
+		return (float) Math.sqrt(magnitudeSquared());
 	}
 }
